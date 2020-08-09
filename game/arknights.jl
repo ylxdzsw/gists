@@ -4,12 +4,11 @@
 #   1. axis are the "array axis", i.e., starts from the left top, x goes down and y goes right
 
 using Boilerplate
-
-@async Boilerplate.load_std().web_display()
-
 using OhMyJulia
 using ImageCore
 using ImageDistances
+
+Boilerplate.load_std()
 
 const Image = Matrix{RGB{Normed{UInt8, 8}}}
 
@@ -32,6 +31,7 @@ read_screen(x, y, h, w) = read_screen(read_screen(), x, y, h, w)
 read_screen(raw, s::Scen) = read_screen(raw, s.area...)
 read_screen(raw, x, y, h, w) = RGB.(view(raw, x:x+h-1, y:y+w-1))
 
+click(args...; delay=rand()) = begin sleep(delay + .5rand()); click(args...) end
 click(x, y) = run(`adb shell input tap $y $x`)
 click(x, y, h, w) = run(`adb shell input tap $(rand(y:y+w-1)) $(rand(x:x+h-1))`)
 click(s::Scen) = click(s.area...)
@@ -54,40 +54,76 @@ end
 scens = deserialize("scens")
 scen_dict = (; (Symbol(s.name) => s for s in scens)...)
 
-function battle(history=[])
+function battle(budget=Ref(0), history=[])
     @info "preparing a battle"
+    @label preparing
     wait_scen(scen_dict.proxy_chosen, timeout=10)
-    sleep(2 + .5rand()) # there is a short unresponsive time
-    click(scen_dict.start_operation)
-    
-    s = wait_scen(scen_dict.team_preparation, timeout=10)
+    click(scen_dict.start_operation, delay=2)
+
+    s = wait_scen(
+        scen_dict.team_preparation,
+        scen_dict.restore_sanity_by_potion,
+        scen_dict.restore_sanity_by_money,
+        timeout=10
+    )
+
     if s === scen_dict.team_preparation
-        sleep(.5 + .5rand())
-        click(scen_dict.team_preparation)
+        click(scen_dict.team_preparation, delay=.5)
+    elseif s === scen_dict.restore_sanity_by_potion || s === scen_dict.restore_sanity_by_money
+        if budget[] > 0
+            @info "use a potion / money"
+            budget[] -= 1
+            click(scen_dict.restore_sanity_confirm_button, delay=.5)
+            @goto preparing
+        end
+
+        @info "running out sanity and budget, finished"
+        click(scen_dict.restore_sanity_cancel_button, delay=.5)
+        notify_desktop("finished!")
+        exit()
     end
-    
+
     battle_start_time = time()
-    timeout = if length(history) > 2
-        println(mean(history))
-        sleep(mean(history))
-        5 + 3std(history)
+    timeout, timespan = if length(history) > 2
+        sleep(mean(history) - 5std(history))
+        5 + 10std(history), 2
+    else
+        sleep(60)
+        nothing, 5
     end
-    wait_scen(scen_dict.battle_finished_star, scen_dict.battle_finished_exp; timeout)
-    sleep(2 + .5rand()) # wait for loot listing
-    click(scen_dict.battle_finished_star)
-
+    wait_scen(scen_dict.battle_finished_star, scen_dict.battle_finished_exp; timeout, timespan)
     push!(history, time() - battle_start_time)
+    @info "battle finished in $(round(Int, time() - battle_start_time))s"
+
+    click(scen_dict.battle_finished_star, delay=2)
 end
 
-for i in 1:4
-    battle()
+
+# ==== entry ==== #
+
+function main()
+    arg = try ARGS[1] catch; "" end
+    budget = Ref(count(x->x == '+', arg))
+    arg = filter(isdigit, arg)
+    remaining = isempty(arg) ? -1 : parse(Int, arg)
+    history = []
+
+    while remaining != 0
+        battle(budget, history)
+        remaining -= 1
+    end
 end
+
+main()
+exit()
 
 # ==== dev utils ==== #
 
+Boilerplate.web_display()
+
 take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
-scen = Scen("battle_finished_exp", 840, 760, 70, 160)
+scen = Scen("battle_finished_trust_background", 720, 1462, 30, 60)
 read_screen(scen.area...)
 
 take_screenshot(scen)
