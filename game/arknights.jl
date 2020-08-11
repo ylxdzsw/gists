@@ -16,7 +16,7 @@ import FileIO
 import Base: show, display, isapprox
 Base.show(io::IO, ::MIME"image/png", img::Image) = FileIO.save(FileIO.Stream(FileIO.format"PNG", io), img)
 Base.display(img::Image) = display(MIME"image/png"(), img)
-Base.isapprox(a::Image, b::Image) = mae(a, b) <= .01
+Base.isapprox(a::Image, b::Image) = mae(a, b) <= .02
 
 mutable struct Scen
     name::String
@@ -51,7 +51,7 @@ function wait_scen(ss::Scen...; timeout=nothing, timespan=2)
     error("timeout while waiting for $(join([s.name for s in ss], ", ", " or "))")
 end
 
-scens = deserialize("scens")
+scens = deserialize(rel"scens")
 scen_dict = (; (Symbol(s.name) => s for s in scens)...)
 
 function battle(budget=Ref(0), history=[])
@@ -85,19 +85,35 @@ function battle(budget=Ref(0), history=[])
 
     battle_start_time = time()
     timeout, timespan = if length(history) > 2
-        sleep(mean(history) - 5std(history))
-        5 + 10std(history), 2
+        sleep(mean(history) - 3std(history))
+        5 + 6std(history), 2
     else
         sleep(60)
         nothing, 5
     end
-    wait_scen(scen_dict.battle_finished_star, scen_dict.battle_finished_exp; timeout, timespan)
+    @label on_finished
+    s = wait_scen(
+        scen_dict.battle_finished_star,
+        scen_dict.battle_finished_exp,
+        scen_dict.battle_finished_trust_background,
+        scen_dict.battle_finished_level_up,
+        scen_dict.extermination_finished_fan,
+        scen_dict.extermination_finished_update,
+        scen_dict.extermination_finished_jade;
+        timeout, timespan)
+    if s === scen_dict.battle_finished_level_up
+        click(scen_dict.battle_finished_level_up, delay=2)
+        @goto on_finished
+    end
+    if s in (scen_dict.extermination_finished_fan, scen_dict.extermination_finished_update)
+        click(scen_dict.extermination_finished_update, delay=.5)
+        @goto on_finished
+    end
     push!(history, time() - battle_start_time)
     @info "battle finished in $(round(Int, time() - battle_start_time))s"
 
     click(scen_dict.battle_finished_star, delay=2)
 end
-
 
 # ==== entry ==== #
 
@@ -123,7 +139,9 @@ Boilerplate.web_display()
 
 take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
-scen = Scen("battle_finished_trust_background", 720, 1462, 30, 60)
+read_screen(scen_dict.proxy_chosen)
+
+scen = Scen("battle_finished_level_up", 500, 1600, 150, 200)
 read_screen(scen.area...)
 
 take_screenshot(scen)
