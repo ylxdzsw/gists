@@ -77,10 +77,9 @@ function battle(budget=Ref(0), history=[])
             @goto preparing
         end
 
-        @info "running out sanity and budget, finished"
+        @info "running out sanity and budget"
         click(scen_dict.restore_sanity_cancel_button, delay=.5)
-        notify_desktop("finished!")
-        exit()
+        return false
     end
 
     battle_start_time = time()
@@ -113,21 +112,58 @@ function battle(budget=Ref(0), history=[])
     @info "battle finished in $(round(Int, time() - battle_start_time))s"
 
     click(scen_dict.battle_finished_star, delay=2)
+    return true
+end
+
+function daily_task()
+    @info "collecting daily task"
+    wait_scen(scen_dict.navigator_icon, timeout=10)
+    click(scen_dict.navigator_icon, delay=.5)
+
+    wait_scen(scen_dict.navigator_task_button, timeout=10)
+    click(scen_dict.navigator_task_button, delay=.5)
+
+    wait_scen(scen_dict.daily_task_tab, timeout=10)
+    click(scen_dict.daily_task_tab, delay=2)
+
+    while true
+        try
+            wait_scen(scen_dict.daily_task_claim_first, timeout=10)
+        catch
+            break
+        end
+
+        click(scen_dict.daily_task_claim_first, delay=2)
+        click(scen_dict.daily_task_claim_first, delay=5)
+    end
+
+    @info "all daily task claimed"
+    click(scen_dict.navigator_back_icon, delay=2)
 end
 
 # ==== entry ==== #
 
 function main()
     arg = try ARGS[1] catch; "" end
+    claim_daily_task = '!' in arg
+    arg = filter(x->x != '!', arg)
+
     budget = Ref(count(x->x == '+', arg))
     arg = filter(isdigit, arg)
+
     remaining = isempty(arg) ? -1 : parse(Int, arg)
     history = []
 
     while remaining != 0
-        battle(budget, history)
+        battle(budget, history) || break
         remaining -= 1
     end
+
+    if claim_daily_task
+        daily_task()
+    end
+
+    notify_desktop("finished!")
 end
 
 main()
@@ -141,7 +177,7 @@ take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
 read_screen(scen_dict.proxy_chosen)
 
-scen = Scen("battle_finished_level_up", 500, 1600, 150, 200)
+scen = Scen("navigator_back_icon", 40, 45, 45, 180)
 read_screen(scen.area...)
 
 take_screenshot(scen)
