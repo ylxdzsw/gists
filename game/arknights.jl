@@ -31,7 +31,7 @@ read_screen(x, y, h, w) = read_screen(read_screen(), x, y, h, w)
 read_screen(raw, s::Scen) = read_screen(raw, s.area...)
 read_screen(raw, x, y, h, w) = RGB.(view(raw, x:x+h-1, y:y+w-1))
 
-click(args...; delay=rand()) = begin sleep(delay + .5rand()); click(args...) end
+click(args...; delay=rand()) = begin sleep(delay + .2rand()); click(args...) end
 click(x, y) = run(`adb shell input tap $y $x`)
 click(x, y, h, w) = run(`adb shell input tap $(rand(y:y+w-1)) $(rand(x:x+h-1))`)
 click(s::Scen) = click(s.area...)
@@ -124,17 +124,22 @@ function daily_task()
     click(scen_dict.navigator_task_button, delay=.5)
 
     wait_scen(scen_dict.daily_task_tab, timeout=10)
-    click(scen_dict.daily_task_tab, delay=2)
+    click(scen_dict.daily_task_tab, delay=1)
 
+    retry = false
     while true
         try
-            wait_scen(scen_dict.daily_task_claim_first, timeout=10)
+            wait_scen(scen_dict.daily_task_claim_first, timeout=5)
+            retry = true # when the reward pops up
         catch
-            break
+            if retry
+                retry = false
+            else
+                break
+            end
         end
 
         click(scen_dict.daily_task_claim_first, delay=2)
-        click(scen_dict.daily_task_claim_first, delay=5)
     end
 
     @info "all daily task claimed"
