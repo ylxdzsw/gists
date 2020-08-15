@@ -175,16 +175,16 @@ Boilerplate.web_display()
 
 take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
-read_screen(scen_dict.proxy_chosen)
+read_screen(scen_dict.daily_task_claim_first)
 
-scen = Scen("navigator_back_icon", 40, 45, 45, 180)
+scen = Scen("daily_task_claim_first", 190, 1610, 60, 180)
 read_screen(scen.area...)
 
 take_screenshot(scen)
 push!(scens, scen)
 serialize("scens", scens)
 
-for s in scens
-    display(md"## $(s.name) $(s.area)")
+for (i, s) in enumerate(scens)
+    display(md"## $i. $(s.name) $(s.area)")
     display(s.screenshot)
 end
