@@ -101,6 +101,7 @@ function battle(budget=Ref(0), history=[])
         scen_dict.extermination_finished_jade;
         timeout, timespan)
     if s === scen_dict.battle_finished_level_up
+        @info "level up"
         click(scen_dict.battle_finished_level_up, delay=2)
         @goto on_finished
     end
