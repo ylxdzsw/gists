@@ -21,7 +21,7 @@ async fn main() {
 }
 
 async fn l(port: u16, dest: String) {
-    let mut listener = tokio::net::TcpListener::bind(std::net::SocketAddr::new("127.0.0.1".parse().unwrap(), port)).await.unwrap();
+    let mut listener = tokio::net::TcpListener::bind(std::net::SocketAddr::new("0.0.0.0".parse().unwrap(), port)).await.unwrap();
     loop {
         let (socket, _) = listener.accept().await.unwrap();
         if let Ok(dest) = tokio::net::TcpStream::connect(dest.parse::<std::net::SocketAddr>().unwrap()).await {
