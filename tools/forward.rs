@@ -1,6 +1,7 @@
 // Usage: forward 3000:4000 <remote_ip>:22
 
 // [dependencies]
+// rlimit = "0.4"
 // futures = "0.3"
 // tokio = { version = "0.2", features = ["rt-core", "tcp", "macros", "io-util"] }
 
@@ -12,6 +13,8 @@ async fn main() {
 
     let p_start: u16 = a[0].parse().unwrap();
     let p_end: u16 = a[1].parse().unwrap();
+
+    setulimit(((p_end - p_start) as u64) + 20);
 
     let handles = (p_start..=p_end).map(|i| tokio::spawn(l(i, b.clone())) );
     futures::future::join_all(handles).await;
@@ -36,4 +39,13 @@ async fn bicopy(mut c1: tokio::net::TcpStream, mut c2: tokio::net::TcpStream) {
         tokio::io::copy(&mut r1, &mut w2),
         tokio::io::copy(&mut r2, &mut w1),
     );
+}
+
+fn setulimit(x: u64) {
+    let res = rlimit::Resource::NOFILE;
+    let (_soft, hard) = rlimit::getrlimit(res).unwrap();
+    if x > hard {
+        panic!("hard ulimit is not enough");
+    }
+    assert!( res.set(x, hard).is_ok() );
 }
