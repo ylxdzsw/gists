@@ -16,7 +16,7 @@ import FileIO
 import Base: show, display, isapprox
 Base.show(io::IO, ::MIME"image/png", img::Image) = FileIO.save(FileIO.Stream(FileIO.format"PNG", io), img)
 Base.display(img::Image) = display(MIME"image/png"(), img)
-Base.isapprox(a::Image, b::Image) = mae(a, b) <= .02
+Base.isapprox(a::Image, b::Image) = similarity(a, b) <= .01
 
 mutable struct Scen
     name::String
@@ -37,6 +37,23 @@ click(x, y, h, w) = run(`adb shell input tap $(rand(y:y+w-1)) $(rand(x:x+h-1))`)
 click(s::Scen) = click(s.area...)
 
 notify_desktop(msg::String) = run(`notify-send Arknights $msg`)
+
+# get similarity by predicting b using 3x3 squares from a
+# because sometimes it has 1 pixel offset (especially when rotated the screen)
+function similarity(a::Image, b::Image)
+    A = zeros(f32, *((size(a).-2)...), 27)
+    B = zeros(f32, *((size(a).-2)...), 3)
+    for i in 2:car(size(a))-1, j in 2:cadr(size(a))-1
+        n = (i - 2) * (cadr(size(a)) - 2) + j - 1
+        A[n, 1:9] = [ a[i+oi, j+oj].r for oi in -1:1 for oj in -1:1 ]
+        A[n, 10:18] = [ a[i+oi, j+oj].g for oi in -1:1 for oj in -1:1 ]
+        A[n, 19:27] = [ a[i+oi, j+oj].b for oi in -1:1 for oj in -1:1 ]
+        B[n, :] = [ b[i, j].r, b[i, j].g, b[i, j].b ]
+    end
+    X = A \ B
+    B̂ = A * X
+    mae(B, B̂)
+end
 
 function wait_scen(ss::Scen...; timeout=nothing, timespan=2)
     start_time = time()
