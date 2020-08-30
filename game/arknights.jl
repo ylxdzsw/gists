@@ -16,7 +16,7 @@ import FileIO
 import Base: show, display, isapprox
 Base.show(io::IO, ::MIME"image/png", img::Image) = FileIO.save(FileIO.Stream(FileIO.format"PNG", io), img)
 Base.display(img::Image) = display(MIME"image/png"(), img)
-Base.isapprox(a::Image, b::Image) = similarity(a, b) <= .01
+Base.isapprox(a::Image, b::Image) = similarity(a, b) <= .005
 
 mutable struct Scen
     name::String
@@ -101,8 +101,8 @@ function battle(budget=Ref(0), history=[])
 
     battle_start_time = time()
     timeout, timespan = if length(history) > 2
-        sleep(mean(history) - 3std(history))
-        5 + 6std(history), 2
+        sleep(minimum(history) - 5)
+        15 + 3std(history), 2
     else
         sleep(60)
         nothing, 5
