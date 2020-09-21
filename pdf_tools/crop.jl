@@ -24,8 +24,9 @@ Optionally trim the margin left, bottom, right, top in %
         f << """
             \\documentclass{article}
             \\usepackage{pdfpages}
+            \\usepackage[paperwidth=$(w - l - r)bp,paperheight=$(h - b - t)bp]{geometry}
             \\begin{document}
-            \\includepdf[pages=-, scale=1, trim=$(l)pts $(b)pts $(r)pts $(t)pts]{$file}
+            \\includepdf[pages=-, scale=1, trim=$(l)bp $(b)bp $(r)bp $(t)bp]{$file}
             \\end{document}
         """
     end
