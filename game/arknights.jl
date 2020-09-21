@@ -16,7 +16,7 @@ import FileIO
 import Base: show, display, isapprox
 Base.show(io::IO, ::MIME"image/png", img::Image) = FileIO.save(FileIO.Stream(FileIO.format"PNG", io), img)
 Base.display(img::Image) = display(MIME"image/png"(), img)
-Base.isapprox(a::Image, b::Image) = similarity(a, b) <= .005
+Base.isapprox(a::Image, b::Image) = similarity(a, b) <= .02
 
 mutable struct Scen
     name::String
@@ -109,9 +109,8 @@ function battle(budget=Ref(0), history=[])
     end
     @label on_finished
     s = wait_scen(
-        scen_dict.battle_finished_star,
         scen_dict.battle_finished_exp,
-        scen_dict.battle_finished_trust_background,
+        scen_dict.battle_finished_trust,
         scen_dict.battle_finished_level_up,
         scen_dict.extermination_finished_fan,
         scen_dict.extermination_finished_update,
@@ -129,7 +128,7 @@ function battle(budget=Ref(0), history=[])
     push!(history, time() - battle_start_time)
     @info "battle finished in $(round(Int, time() - battle_start_time))s"
 
-    click(scen_dict.battle_finished_star, delay=2)
+    click(scen_dict.battle_finished_trust, delay=2)
     return true
 end
 
@@ -198,9 +197,9 @@ Boilerplate.web_display()
 
 take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
-read_screen(scen_dict.daily_task_claim_first)
+read_screen(scen_dict.battle_finished_trust_background)
 
-scen = Scen("daily_task_claim_first", 190, 1610, 60, 180)
+scen = Scen("battle_finished_trust", 718, 1330, 30, 150)
 read_screen(scen.area...)
 
 take_screenshot(scen)
