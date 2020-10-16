@@ -110,6 +110,7 @@ function battle(budget=Ref(0), history=[])
     @label on_finished
     s = wait_scen(
         scen_dict.battle_finished_exp,
+        scen_dict.battle_finished_fest,
         scen_dict.battle_finished_trust,
         scen_dict.battle_finished_level_up,
         scen_dict.extermination_finished_fan,
@@ -199,7 +200,7 @@ take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
 read_screen(scen_dict.battle_finished_trust_background)
 
-scen = Scen("battle_finished_trust", 718, 1330, 30, 150)
+scen = Scen("battle_finished_fest", 840, 760, 70, 160)
 read_screen(scen.area...)
 
 take_screenshot(scen)
