@@ -16,7 +16,8 @@
     "julia.useRevise": false,
     "julia.enableCrashReporter": false,
     "python.linting.enabled": false,
-    "python.jediEnabled": false,
+    "python.languageServer": "Microsoft",
+    "python.showStartPage": false,
     "git.autofetch": false,
     "git.decorations.enabled": false,
     "window.zoomLevel": 0,
@@ -45,8 +46,7 @@
         "statusBar.background": "#2d2d2d",
         "statusBar.noFolderBackground": "#2d2d2d"
     },
-    "rust-analyzer.cargo-watch.command": "clippy",
-    "rust-analyzer.cargo-watch.allTargets": false,
     "rust-analyzer.inlayHints.typeHints": false,
-    "rust-analyzer.inlayHints.parameterHints": false
+    "rust-analyzer.inlayHints.parameterHints": false,
+    "rust-analyzer.lens.enable": false
 }
