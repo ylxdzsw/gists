@@ -198,9 +198,9 @@ Boilerplate.web_display()
 
 take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
-read_screen(scen_dict.battle_finished_trust_background)
+read_screen(scen_dict.restore_sanity_cancel_button)
 
-scen = Scen("battle_finished_fest", 840, 760, 70, 160)
+scen = Scen("restore_sanity_cancel_button", 825, 1085, 85, 170)
 read_screen(scen.area...)
 
 take_screenshot(scen)

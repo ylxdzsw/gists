@@ -6,7 +6,7 @@ Crop a pdf file to fit iPad screen (3:4).
 Optionally trim the margin left, bottom, right, top in %.
 If side_offset is set, it will also adjust for two side pdfs.
 """
-@main function crop(file; trim::Vector{f32}=f32[5,5,5,5], side_offset::f32=0.)
+@main function crop(file; trim::Vector{f32}=f32[5,5,5,5], side_offset::f32=0f32)
     size = read(`sh -c "pdfinfo $file | awk '/Page size/{print \$3,\$5}'"`, String)
     w, h = parse.(f32, split(size))
     l, b, r, t = trim .* [w, h, w, h] ./ 100
