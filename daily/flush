@@ -1,0 +1,5 @@
+#!/usr/bin/pkexec /usr/bin/zsh
+set -x
+
+sync
+echo 1 > /proc/sys/vm/drop_caches
