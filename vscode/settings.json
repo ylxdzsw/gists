@@ -15,6 +15,7 @@
     "julia.enableTelemetry": false,
     "julia.useRevise": false,
     "julia.enableCrashReporter": false,
+    "julia.usePlotPane": false,
     "python.linting.enabled": false,
     "python.languageServer": "Microsoft",
     "python.showStartPage": false,
@@ -48,5 +49,8 @@
     },
     "rust-analyzer.inlayHints.typeHints": false,
     "rust-analyzer.inlayHints.parameterHints": false,
-    "rust-analyzer.lens.enable": false
+    "rust-analyzer.lens.enable": false,
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ]
 }

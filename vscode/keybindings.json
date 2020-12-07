@@ -59,36 +59,6 @@
         "command": "workbench.action.navigateForward"
     },
     {
-        "key": "ctrl+enter",
-        "command": "language-julia.executeJuliaBlockInREPL",
-        "when": "editorTextFocus && !editorHasSelection && editorLangId == 'julia'"
-    },
-    {
-        "key": "alt+enter",
-        "command": "-language-julia.executeJuliaBlockInREPL",
-        "when": "editorTextFocus && !editorHasSelection && editorLangId == 'julia'"
-    },
-    {
-        "key": "alt+enter",
-        "command": "language-julia.executeJuliaCodeInREPL",
-        "when": "editorTextFocus && editorLangId == 'julia'"
-    },
-    {
-        "key": "ctrl+enter",
-        "command": "-language-julia.executeJuliaCodeInREPL",
-        "when": "editorTextFocus && editorLangId == 'julia'"
-    },
-    {
-        "key": "alt+enter",
-        "command": "language-julia.executeJuliaCodeInREPL",
-        "when": "editorTextFocus && editorLangId == 'juliamarkdown'"
-    },
-    {
-        "key": "ctrl+enter",
-        "command": "-language-julia.executeJuliaCodeInREPL",
-        "when": "editorTextFocus && editorLangId == 'juliamarkdown'"
-    },
-    {
         "key": "ctrl+shift+d",
         "command": "language-julia.selectBlock",
         "when": "editorTextFocus && editorLangId == 'julia'"
@@ -124,5 +94,13 @@
     {
         "key": "ctrl+shift+tab",
         "command": "-workbench.action.openPreviousRecentlyUsedEditorInGroup"
+    },
+    {
+        "key": "ctrl+=",
+        "command": "-workbench.action.zoomIn"
+    },
+    {
+        "key": "ctrl+-",
+        "command": "-workbench.action.zoomOut"
     }
 ]
