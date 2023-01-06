@@ -33,7 +33,7 @@ bindsym Mod4+d move scratchpad
 bindsym Mod4+Shift+d scratchpad show
 bindsym Mod4+l exec zsh -c 'if [[ $(swaymsg -t get_outputs -r | jq ".[].dpms") =~ "false" ]]; then swaymsg "output * dpms on"; else swaymsg "output * dpms off"; fi'
 bindsym F11 fullscreen
-bindsym Print exec grim -g "$(slurp -d)" - | wl-copy -t image/png
+bindsym Print exec zsh -c 'grim -g "$(slurp -d)" - | wl-copy -t image/png; [[ -n $(wl-paste) ]] && notify-send "Screenshot Saved in Clipboard" -t 3000 -i =(wl-paste)'
 
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +6%
