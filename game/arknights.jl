@@ -9,7 +9,6 @@ using ImageCore
 using ImageDistances
 
 Boilerplate.load_std()
-
 const Image = Matrix{RGB{Normed{UInt8, 8}}}
 
 import FileIO
@@ -189,6 +188,7 @@ function main()
     notify_desktop("finished!")
 end
 
+
 main()
 exit()
 
@@ -198,9 +198,9 @@ Boilerplate.web_display()
 
 take_screenshot(scen::Scen) = scen.screenshot = read_screen(scen.area...)
 
-read_screen(scen_dict.restore_sanity_cancel_button)
+read_screen(scen_dict.team_preparation)
 
-scen = Scen("restore_sanity_cancel_button", 825, 1085, 85, 170)
+scen = Scen("team_preparation", 600, 1560, 300, 190)
 read_screen(scen.area...)
 
 take_screenshot(scen)

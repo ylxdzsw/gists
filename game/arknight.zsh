@@ -6,12 +6,12 @@
 
 repeat ${2:-1} {
     adb shell input tap 1700 950
-    sleep 3
+    sleep 4
     adb shell input tap 1600 850
     sleep ${1:-2m}
     echo finished
     adb shell input tap 1600 500
-    sleep 4
+    sleep 8
 }
 
 notify-send Arknights 'all done'
