@@ -6,7 +6,7 @@ titlebar_padding 4 3
 
 bar {
     position top
-    status_command while ~/.config/sway/status.sh; do sleep 1; done
+    status_command while ~/.config/sway/status.sh; do sleep 0.1; done
     mode hide
     hidden_state hide
     modifier Mod4
@@ -23,10 +23,10 @@ output "*" bg /home/ylxdzsw/Pictures/Wallpapers/piano.jpg fill
 bindsym Mod4+q kill
 bindsym Mod4+1 exec pcmanfm
 bindsym Mod4+2 exec alacritty
-bindsym Mod4+3 exec chromium
+bindsym Mod4+3 exec swaymsg '[app_id="chromium"] focus' || chromium
 bindsym Mod4+4 exec code
-bindsym Mod4+5 exec youtube-music --ozone-platform-hint=wayland
-bindsym Mod4+grave exec j4-dmenu-desktop --dmenu='bemenu -i' --term='alacritty'
+bindsym Mod4+5 exec swaymsg '[title="YouTube Music"] focus' || youtube-music --ozone-platform-hint=wayland
+bindsym Mod4+grave exec j4-dmenu-desktop --dmenu='bemenu -i -l 6' --term='alacritty'
 bindsym Mod4+f floating toggle
 bindsym Mod4+r exec swaymsg $(slurp -d | awk -F'[,x ]' '{print "floating enable, resize set " $3 " " $4 ", move absolute position " $1 " " $2}')
 bindsym Mod4+d move scratchpad
