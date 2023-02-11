@@ -5,13 +5,15 @@
 #       7 is number of battles in a row (default: 1).
 
 repeat ${2:-1} {
-    adb shell input tap 1700 950
+    echo preparing
+    adb shell input tap 1700 960
     sleep 4
-    adb shell input tap 1600 850
+    echo starting
+    adb shell input tap 1600 750
     sleep ${1:-2m}
     echo finished
     adb shell input tap 1600 500
-    sleep 8
+    sleep 10
 }
 
 notify-send Arknights 'all done'
