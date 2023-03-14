@@ -1,6 +1,7 @@
 xwayland disable
 
 focus_follows_mouse no
+focus_wrapping force
 titlebar_border_thickness 0
 titlebar_padding 4 3
 
@@ -33,6 +34,7 @@ bindsym Mod4+f floating toggle
 bindsym Mod4+s split toggle
 bindsym Mod4+Shift+s split none
 bindsym Mod4+a layout toggle splith splitv tabbed
+bindsym Mod4+Tab focus next
 bindsym Mod4+r exec swaymsg $(slurp -d | awk -F'[,x ]' '{print "floating enable, resize set " $3 " " $4 ", move absolute position " $1 " " $2}')
 bindsym Mod4+d move scratchpad
 bindsym Mod4+Shift+d scratchpad show
