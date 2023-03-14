@@ -4,6 +4,8 @@ focus_follows_mouse no
 titlebar_border_thickness 0
 titlebar_padding 4 3
 
+floating_modifier Mod4
+
 bar {
     position top
     status_command while ~/.config/sway/status.sh; do sleep 0.1; done
@@ -26,8 +28,11 @@ bindsym Mod4+2 exec alacritty
 bindsym Mod4+3 exec swaymsg '[app_id="chromium"] focus' || chromium
 bindsym Mod4+4 exec code
 bindsym Mod4+5 exec swaymsg '[title="YouTube Music"] focus' || youtube-music --ozone-platform-hint=wayland
-bindsym Mod4+grave exec j4-dmenu-desktop --dmenu='bemenu -i -l 6' --term='alacritty'
+bindsym Mod4+6 exec telegram-desktop
 bindsym Mod4+f floating toggle
+bindsym Mod4+s split toggle
+bindsym Mod4+Shift+s split none
+bindsym Mod4+a layout toggle splith splitv tabbed
 bindsym Mod4+r exec swaymsg $(slurp -d | awk -F'[,x ]' '{print "floating enable, resize set " $3 " " $4 ", move absolute position " $1 " " $2}')
 bindsym Mod4+d move scratchpad
 bindsym Mod4+Shift+d scratchpad show
@@ -36,8 +41,8 @@ bindsym F11 fullscreen
 bindsym Print exec zsh -c 'grim -g "$(slurp -d)" - | wl-copy -t image/png; [[ -n $(wl-paste) ]] && notify-send "Screenshot Saved in Clipboard" -t 3000 -i =(wl-paste)'
 
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +6%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -6%
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioPlay exec busctl --user call $(busctl --user -j | jq -r '[.[]|select(.pid)|select(.name|contains("org.mpris.MediaPlayer2."))|.name][0]') /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player PlayPause
 bindsym XF86AudioNext exec busctl --user call $(busctl --user -j | jq -r '[.[]|select(.pid)|select(.name|contains("org.mpris.MediaPlayer2."))|.name][0]') /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player Next
 bindsym XF86AudioPrev exec busctl --user call $(busctl --user -j | jq -r '[.[]|select(.pid)|select(.name|contains("org.mpris.MediaPlayer2."))|.name][0]') /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player Previous
@@ -50,4 +55,6 @@ for_window [app_id="imv"] floating enable
 for_window [app_id="ffplay"] floating enable
 for_window [title="YouTube Music"] floating enable
 for_window [title="Save File"] floating enable
+
+client.focused_inactive #333333 #222222 #ffffff #292d2e #222222
 
