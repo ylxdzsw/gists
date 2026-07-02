@@ -123,14 +123,6 @@
         "apiKey": "{env:YUNWU_API_KEY}"
       },
       "models": {
-        "claude-opus-4-6": {
-          "name": "Claude Opus 4.6",
-          "cost": { "input": 5, "output": 25, "cache_read": 0.5, "cache_write": 6.25 },
-          "limit": { "context": 200000, "output": 64000 },
-          "reasoning": true,
-          "attachment": true,
-          "modalities": { "input": ["text", "image", "pdf"] }
-        },
         "claude-opus-4-8": {
           "name": "Claude Opus 4.8",
           "cost": { "input": 5, "output": 25, "cache_read": 0.5, "cache_write": 6.25 },
@@ -139,10 +131,10 @@
           "attachment": true,
           "modalities": { "input": ["text", "image", "pdf"] }
         },
-        "claude-sonnet-4-6": {
-          "name": "Claude Sonnet 4.6",
-          "cost": { "input": 3, "output": 15, "cache_read": 0.3, "cache_write": 3.75 },
-          "limit": { "context": 200000, "output": 64000 },
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
+          "cost": { "input": 2, "output": 10, "cache_read": 0.2, "cache_write": 4 },
+          "limit": { "context": 1000000, "output": 128000 },
           "reasoning": true,
           "attachment": true,
           "modalities": { "input": ["text", "image", "pdf"] }
@@ -153,7 +145,7 @@
   "agent": {
     "explore": {
       "description": "Read-only agent backed by a cheap model.",
-      "model": "openai/gpt-5.4-mini"
+      "model": "yunwu-codex/gpt-5.4-mini"
     },
     "general": {
       "description": "General-purpose subagent with write permission."
