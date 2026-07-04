@@ -129,15 +129,15 @@
         "apiKey": "{env:CR_CLAUDE_KIRO_API_KEY}"
       },
       "models": {
-        "sonnet-5": {
-          "name": "Sonnet 5",
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
           "limit": { "context": 400000, "input": 272000, "output": 128000 },
           "reasoning": true,
           "attachment": true,
           "modalities": { "input": ["text", "image", "pdf"] }
         },
-        "opus-4.8": {
-          "name": "Opus 4.8",
+        "claude-opus-4.8": {
+          "name": "Claude Opus 4.8",
           "limit": { "context": 400000, "input": 272000, "output": 128000 },
           "reasoning": true,
           "attachment": true,
@@ -153,15 +153,15 @@
         "apiKey": "{env:CR_CLAUDE_AUS_API_KEY}"
       },
       "models": {
-        "sonnet-5": {
-          "name": "Sonnet 5",
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
           "limit": { "context": 400000, "input": 272000, "output": 128000 },
           "reasoning": true,
           "attachment": true,
           "modalities": { "input": ["text", "image", "pdf"] }
         },
-        "opus-4.8": {
-          "name": "Opus 4.8",
+        "claude-opus-4.8": {
+          "name": "Claude Opus 4.8",
           "limit": { "context": 400000, "input": 272000, "output": 128000 },
           "reasoning": true,
           "attachment": true,
