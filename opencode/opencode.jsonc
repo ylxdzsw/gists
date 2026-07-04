@@ -120,6 +120,54 @@
           "modalities": { "input": ["text", "image", "pdf"] }
         }
       }
+    },
+    "cr-claude-kiro": {
+      "npm": "@ai-sdk/claude",
+      "name": "CR Claude Kiro",
+      "options": {
+        "baseURL": "https://cdn.coderelay.cn/v1",
+        "apiKey": "{env:CR_CLAUDE_KIRO_API_KEY}"
+      },
+      "models": {
+        "sonnet-5": {
+          "name": "Sonnet 5",
+          "limit": { "context": 400000, "input": 272000, "output": 128000 },
+          "reasoning": true,
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"] }
+        },
+        "opus-4.8": {
+          "name": "Opus 4.8",
+          "limit": { "context": 400000, "input": 272000, "output": 128000 },
+          "reasoning": true,
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"] }
+        }
+      }
+    },
+    "cr-claude-aus": {
+      "npm": "@ai-sdk/claude",
+      "name": "CR Claude Austrilia",
+      "options": {
+        "baseURL": "https://cdn.coderelay.cn/v1",
+        "apiKey": "{env:CR_CLAUDE_AUS_API_KEY}"
+      },
+      "models": {
+        "sonnet-5": {
+          "name": "Sonnet 5",
+          "limit": { "context": 400000, "input": 272000, "output": 128000 },
+          "reasoning": true,
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"] }
+        },
+        "opus-4.8": {
+          "name": "Opus 4.8",
+          "limit": { "context": 400000, "input": 272000, "output": 128000 },
+          "reasoning": true,
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"] }
+        }
+      }
     }
   },
   "agent": {
